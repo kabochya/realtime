@@ -81,16 +81,16 @@ tenant's dev stack and clear of every other run.
 > **Note**
 > Supabase runs Realtime in production with a separate database that keeps track of all tenants. For local development, the compose setup creates the `_realtime` schema for you.
 
-You can add your own by making a `POST` request to the server. You must change both `name` and `external_id` while you may update other values as you see fit:
+You can add your own by making a `POST` request to the server. You must change both `name` and `external_id` while you may update other values as you see fit — reusing an existing `external_id` (like `realtime-dev`) updates that tenant instead of creating a new one:
 
 ```bash
   curl -X POST \
   -H 'Content-Type: application/json' \
-  -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIiLCJpYXQiOjE2NzEyMzc4NzMsImV4cCI6MTcwMjc3Mzk5MywiYXVkIjoiIiwic3ViIjoiIn0._ARixa2KFUVsKBf3UGR90qKLCpGjxhKcXY4akVbmeNQ' \
+  -H "Authorization: Bearer $(mix realtime.gen_token)" \
   -d $'{
     "tenant" : {
-      "name": "realtime-dev",
-      "external_id": "realtime-dev",
+      "name": "example-tenant",
+      "external_id": "example-tenant",
       "jwt_secret": "a1d99c8b-91b6-47b2-8f3c-aa7d9a9ad20f",
       "extensions": [
         {
@@ -114,7 +114,7 @@ You can add your own by making a `POST` request to the server. You must change b
 ```
 
 > **Note**
-> The `Authorization` token is signed with the secret set by `API_JWT_SECRET` in the local compose environment.
+> The `Authorization` header is a JWT signed with `API_JWT_SECRET`; `mix realtime.gen_token` generates one for you.
 
 If you want to listen to Postgres changes, you can create a table and then add the table to the `supabase_realtime` publication:
 
@@ -126,11 +126,78 @@ create table test (
 alter publication supabase_realtime add table test;
 ```
 
-You can start playing around with Broadcast, Presence, and Postgres Changes features either with the client libs (e.g. `@supabase/realtime-js`), or use the built in Realtime Inspector on localhost, `http://localhost:4000/inspector/new` (make sure the port is correct for your development environment).
+You can start playing around with Broadcast, Presence, and Postgres Changes features either with the client libs (e.g. `@supabase/realtime-js`), or the built-in Realtime Inspector on localhost, `http://localhost:4000/inspector/new` (make sure the port is correct for your development environment).
 
 The WebSocket URL must contain the subdomain, `external_id` of the tenant on the `tenants` table, and the token must be signed with the `jwt_secret` that was inserted along with the tenant.
 
-If you're using the default tenant, the URL is `ws://realtime-dev.localhost:4000/socket` (make sure the port is correct for your development environment), and you can use `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MDMwMjgwODcsInJvbGUiOiJwb3N0Z3JlcyJ9.tz_XJ89gd6bN8MBpCl7afvPrZiBH6RB65iA1FadPT3Y` for the token. The token must have `exp` and `role` (database role) keys.
+#### Using the Inspector
+
+```bash
+mise run dev-inspector   # opens the Inspector with host and token already filled in for TENANT
+```
+
+Or fill in the connect line at the top yourself:
+
+- **Host**: `http://realtime-dev.localhost:4000`
+- **Token**: `mix realtime.gen_token` (signs with `API_JWT_SECRET`, which is also `realtime-dev`'s `jwt_secret`)
+- **Channel**: anything, e.g. `room_a`
+
+Toggle on **presence** and/or **postgres changes** if you want to exercise them, then hit **Connect**. The event log at the bottom shows everything on the socket as it happens; the form below it sends a broadcast. For Postgres Changes, point the table field at `test` (created above) and insert a row from `psql` to see it land.
+
+### Testing against Multigres
+
+Use two independent Multigres tenant clusters and one concurrent test case. Some
+tests hold two tenant databases at once; two gateways into the same cluster do
+not provide isolation because tenant setup resets the `realtime` schema.
+
+With Docker running and the mise toolchain installed, run from the repository root:
+
+```bash
+export COMPOSE_PROJECT_NAME=multigres-realtime-tests
+export COMPOSE_PROFILES=multigres
+export POSTGRES_IMAGE=supabase/postgres:17.6.1.166
+export TENANT_DB_IMAGE=ghcr.io/multigres/multigres-cluster-supabase:sha-0de21aa
+export DB_PORT=35432
+export TENANT_DB_PORT=35433
+export TENANT_DB_SECONDARY_PORT=35434
+export USE_EXTERNAL_TENANT_DB=true
+export EXTERNAL_TENANT_DB_PORTS=35433,35434
+export MAX_CASES=1
+export MIX_ENV=test
+
+docker compose -f compose.dbs.yml up -d --wait --wait-timeout 300
+docker compose -f compose.dbs.yml run --rm tenant_db_bootstrap
+docker compose -f compose.dbs.yml run --rm tenant_db_secondary_bootstrap
+mise exec -- mix test
+```
+
+Choose unused host ports if these conflict with another local deployment. The
+metadata database remains ordinary Postgres. Both tenant services enable
+`MT_ENABLE_SLOT_BASED_REPLICATION`; no local Compose override is required.
+To test a local Multigres build, set `TENANT_DB_IMAGE` to its image tag instead.
+
+The external backend creates one pool worker per configured port. `MAX_CASES`
+controls test concurrency independently and must be between one and the number
+of ports; if omitted, it defaults to the port count. Reserve enough workers for
+tests that acquire multiple tenants. CI uses two clusters with `MAX_CASES=1`.
+The regular Docker backend retains its existing concurrency and spare workers.
+
+The tenant services set test WAL limits using `MULTIGRES_PG_EXTRA_CONF`.
+These settings apply when the cluster initializes: recreate existing tenant
+containers before testing a changed configuration, then rerun both bootstrap
+commands. Tenant cleanup preserves physical replication slots used by Multigres.
+
+Permission/version tags are detected on the tenant databases, and all external
+tenants must have matching capabilities. Connection-limit tests derive their
+requested pool sizes from the server's actual limit. Recovery tests use a local
+TCP proxy to interrupt client connections through the gateway.
+
+pg-delta tests allocate a separate, disposable shadow database on the ordinary
+metadata Postgres server for each plan, and drop it afterward. The tenant remains
+the Multigres target. `TenantMigrations.run_pgdelta(settings, shadow_url: url)`
+allows callers to supply a dedicated shadow explicitly; never pass the metadata
+or tenant database itself as the shadow. The caller owns its lifecycle and must
+avoid sharing it between concurrent plans.
 
 ### Tenant migrations and snapshots
 

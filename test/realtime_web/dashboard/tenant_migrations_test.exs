@@ -138,6 +138,7 @@ defmodule RealtimeWeb.Dashboard.TenantMigrationsTest do
     # The 15.1.0.1 image is excluded because its pg_net 0.6 worker never accepts the
     # ProcSignalBarrier, so pg-delta's DROP DATABASE ... WITH (FORCE) shadow cleanup hangs.
     @describetag :requires_supautils_policy_grants
+    @describetag :requires_pgdelta
     setup %{tenant: tenant} do
       {:ok, settings} = Database.from_tenant(tenant, "realtime_test", :stop)
       settings = %{settings | pool_size: 1}
@@ -216,6 +217,66 @@ defmodule RealtimeWeb.Dashboard.TenantMigrationsTest do
       assert {:ok, %{status: :no_changes}} = TenantMigrations.run_pgdelta(settings)
     end
 
+    test "keeps grants on customer-created roles while planning real drift", %{
+      tenant: tenant,
+      settings: settings,
+      admin_conn: admin_conn
+    } do
+      Postgrex.query!(admin_conn, "DROP ROLE IF EXISTS customer_role", [])
+      Postgrex.query!(admin_conn, "CREATE ROLE customer_role NOLOGIN", [])
+
+      on_exit(fn ->
+        {:ok, conn} = Database.connect_db(%{settings | username: "supabase_admin"})
+        Postgrex.query!(conn, "DROP OWNED BY customer_role", [])
+        Postgrex.query!(conn, "DROP ROLE IF EXISTS customer_role", [])
+      end)
+
+      Postgrex.query!(admin_conn, "GRANT USAGE ON SCHEMA realtime TO customer_role", [])
+      Postgrex.query!(admin_conn, "GRANT SELECT, INSERT ON realtime.messages TO customer_role", [])
+      Postgrex.query!(admin_conn, "DROP INDEX realtime.messages_inserted_at_topic_index", [])
+
+      assert {:ok, %{status: :changes, sql: sql, plan: plan}} = TenantMigrations.run_pgdelta(settings)
+
+      assert sql =~ "CREATE INDEX messages_inserted_at_topic_index"
+      refute sql =~ "customer_role"
+
+      assert :ok = TenantMigrations.apply_pgdelta(tenant, plan)
+
+      assert %Postgrex.Result{rows: [[true, true, true]]} =
+               Postgrex.query!(
+                 admin_conn,
+                 """
+                 SELECT
+                   has_schema_privilege('customer_role', 'realtime', 'USAGE'),
+                   has_table_privilege('customer_role', 'realtime.messages', 'SELECT'),
+                   has_table_privilege('customer_role', 'realtime.messages', 'INSERT')
+                 """,
+                 []
+               )
+    end
+
+    test "still reverts an added privilege on a platform grantee", %{
+      tenant: tenant,
+      settings: settings,
+      admin_conn: admin_conn
+    } do
+      Postgrex.query!(admin_conn, "GRANT DELETE ON realtime.messages TO authenticated", [])
+
+      assert {:ok, %{status: :changes, sql: sql, plan: plan}} = TenantMigrations.run_pgdelta(settings)
+
+      assert sql =~ ~s(REVOKE ALL ON TABLE "realtime"."messages" FROM "authenticated")
+      assert sql =~ ~s(GRANT INSERT, SELECT, UPDATE ON TABLE "realtime"."messages" TO "authenticated")
+
+      assert :ok = TenantMigrations.apply_pgdelta(tenant, plan)
+
+      assert %Postgrex.Result{rows: [[false]]} =
+               Postgrex.query!(
+                 admin_conn,
+                 "SELECT has_table_privilege('authenticated', 'realtime.messages', 'DELETE')",
+                 []
+               )
+    end
+
     test "surfaces the shadow database error when the role lacks CREATEDB", %{
       settings: settings,
       admin_conn: admin_conn
@@ -236,6 +297,7 @@ defmodule RealtimeWeb.Dashboard.TenantMigrationsTest do
     # The 15.1.0.1 image is excluded because its pg_net 0.6 worker never accepts the
     # ProcSignalBarrier, so pg-delta's DROP DATABASE ... WITH (FORCE) shadow cleanup hangs.
     @describetag :requires_supautils_policy_grants
+    @describetag :requires_pgdelta
     setup %{tenant: tenant} do
       {:ok, settings} = Database.from_tenant(tenant, "realtime_test", :stop)
       settings = %{settings | pool_size: 1}
