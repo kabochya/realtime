@@ -1,0 +1,101 @@
+    warning: Logger.add_backend/1 is deprecated. Use LoggerBackends.add/2 from :logger_backends dependency
+    │
+ 31 │       Logger.add_backend(LogflareLogger.HttpBackend)
+    │              ~
+    │
+    └─ lib/realtime/application.ex:31:14: Realtime.Application.start/2
+
+     warning: the following conditional expression:
+
+         !use_replica?
+
+     will always evaluate to true because its inner expression has type:
+
+         dynamic(false or nil)
+
+     type warning found at:
+     │
+ 190 │       !use_replica? and master_region?() ->
+     │       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     │
+     └─ lib/realtime/api.ex:190: Realtime.Api.get_tenant_by_external_id/2
+
+     warning: the following clause will never match:
+
+         {:error, _} ->
+
+     because it attempts to match on the result of:
+
+         Realtime.Nodes.get_node_for_tenant(tenant)
+
+     which has type:
+
+         dynamic({:ok, term(), nil or binary()})
+
+     type warning found at:
+     │
+ 162 │         {:error, _} -> node()
+     │         ~~~~~~~~~~~~~~~~~~~~~
+     │
+     └─ lib/realtime/tenants/migrations.ex:162: Realtime.Tenants.Migrations.migration_target/1
+
+
+19:48:20.022 [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+
+19:48:20.081 [info] Migrations already up
+warning: the following files do not match any of the configured `:test_load_filters` / `:test_ignore_filters`:
+
+dev/bench/realtime_latency.exs
+
+This might indicate a typo in a test file name (for example, using "foo_tests.exs" instead of "foo_test.exs").
+
+See the configuration for `:test_pattern` under `mix help test` for more information.
+
+[test_helper.exs] Time to start tests: 33 ms
+Running ExUnit with seed: 1, max_cases: 1
+Excluding tags: [:failing, :requires_supautils_policy_grants, :requires_docker_backend, :requires_pgdelta]
+
+BENCHMARK {"end_to_end_latency_ms":{"count":499,"max":117.607,"mean":38.45933466933867,"p50":31.831,"p95":88.417,"p99":112.922},"delivery_elapsed_seconds":10.001561,"otp_release":"29","attempted_inserts":1000,"peak_backlog":7,"errors":["1 committed inserts missing delivery after drain timeout"],"telemetry":{"broadcast_processed_events":0,"poll_query_ms":{"count":487,"max":18.966,"min":1.353,"mean":5.470782340862419,"p50":5.686,"p95":8.73,"p99":10.36},"broadcast_commit_lag_ms":{"count":0},"broadcast_inserted_at_lag_ms":{"count":0},"broadcast_processed_per_second":0.0,"event_counters":{"realtime.replication.poller.query.stop":487}},"payload_bytes":256,"backlog_at_write_end":1,"warmup_seconds":3,"mode":"independent","delivered_events_per_second_during_writes":49.892211825734,"target_rate_achieved":true,"events_before_sql_ack":0,"server":{"max_connections":"100","max_wal_senders":"10","synchronous_commit":"on","synchronous_standby_names":"ANY 1 (\"zone1_5pmkb68h\", \"zone2_x82xq6md\")","version":"PostgreSQL 17.6 on aarch64-unknown-linux-gnu, compiled by gcc (GCC) 15.2.0, 64-bit"},"post_ack_delivery_lag_ms":{"count":499,"max":115.178,"mean":34.883336673346705,"p50":28.708,"p95":85.238,"p99":109.574},"scenario":"rls","intentionally_filtered":500,"workload":"postgres-changes","delivered_events_per_second":49.892211825734,"delivery_timeout_ms":10000,"elapsed_seconds":20.002648,"expected_events":500,"schedulers":10,"backend":"multigres","max_bytes_per_second":1000000000,"concurrency":4,"successful_inserts":1000,"clock_after":{"db_minus_host_ms":0.271,"uncertainty_ms":0.4},"successful_insert_qps":99.98439243634068,"drain_seconds":0.0,"sql_latency_ms":{"count":1000,"max":27.005,"mean":3.5742629999999997,"p50":3.143,"p95":6.516,"p99":12.025},"requested_seconds":10,"poll_interval_ms":10,"missing_events":1,"poll_max_changes":100,"drain_wait_seconds":10.001087,"write_elapsed_seconds":10.001561,"target_writes_per_second":100,"elixir_version":"1.20.4","clock_before":{"db_minus_host_ms":0.3915,"uncertainty_ms":0.4635},"timestamp":"2026-09-22T02:48:47.245176Z","delivered_events":499,"max_events_per_second":1000000,"missed_schedule_slots":0}
+
+
+  1) test database to Realtime processing and delivery (RealtimeLatencyBenchmark)
+     dev/bench/realtime_latency.exs:13
+     benchmark errors; see /Users/plin/multigres/realtime-harness/realtime/.temp/bench/rate-sweep-20260921-resumed/postgres-changes-rls-multigres-c4-q100-r1.json
+     code: assert result.errors == [], "benchmark errors; see #{output}"
+     stacktrace:
+       dev/bench/realtime_latency.exs:131: (test)
+
+     The following output was logged:
+     19:48:20.528 error_code=DatabaseIpVersionIsIpv4 [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+     19:48:20.548 error_code=DatabaseIpVersionIsIpv4 [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+     19:48:21.140 error_code=DatabaseIpVersionIsIpv4 [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+     19:48:21.896 error_code=DatabaseIpVersionIsIpv4 [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+     19:48:21.925 error_code=DatabaseIpVersionIsIpv4 project=4cmi4k5k3k5drjdhhwxvug23q3hi3arw external_id=4cmi4k5k3k5drjdhhwxvug23q3hi3arw [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+     19:48:21.929 error_code=DatabaseIpVersionIsIpv4 project=4cmi4k5k3k5drjdhhwxvug23q3hi3arw external_id=4cmi4k5k3k5drjdhhwxvug23q3hi3arw [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+     19:48:21.963 error_code=DatabaseIpVersionIsIpv4 [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+     19:48:22.087 project=4cmi4k5k3k5drjdhhwxvug23q3hi3arw external_id=4cmi4k5k3k5drjdhhwxvug23q3hi3arw [warning] Starting distributed postgres extension [lauch_node: :"main@127.0.0.1", region: "us-east-1", platform_region: "us-east-1"]
+     19:48:22.090 error_code=DatabaseIpVersionIsIpv4 project=4cmi4k5k3k5drjdhhwxvug23q3hi3arw external_id=4cmi4k5k3k5drjdhhwxvug23q3hi3arw [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+     19:48:22.090 error_code=DatabaseIpVersionIsIpv4 project=4cmi4k5k3k5drjdhhwxvug23q3hi3arw external_id=4cmi4k5k3k5drjdhhwxvug23q3hi3arw [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+     19:48:22.091 error_code=DatabaseIpVersionIsIpv4 project=4cmi4k5k3k5drjdhhwxvug23q3hi3arw external_id=4cmi4k5k3k5drjdhhwxvug23q3hi3arw [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+     19:48:22.091 error_code=ReconnectSubscribeToPostgres project=4cmi4k5k3k5drjdhhwxvug23q3hi3arw external_id=4cmi4k5k3k5drjdhhwxvug23q3hi3arw exp=1790650102 [warning] ReconnectSubscribeToPostgres: Re-connecting to PostgreSQL with params: [%{id: "1321f7a4-b630-11f1-89fb-6a37a3b0599b", params: %{"event" => "INSERT", "schema" => "public", "table" => "test"}, channel_pid: #PID<0.1641.0>, claims: %{"audience" => "allowed", "exp" => 1790650102, "iat" => 1790045302, "ref" => "127.0.0.1", "role" => "anon"}}]
+     19:48:22.096 error_code=PoolingReplicationPreparationError project=4cmi4k5k3k5drjdhhwxvug23q3hi3arw external_id=4cmi4k5k3k5drjdhhwxvug23q3hi3arw [error] PoolingReplicationPreparationError: %Postgrex.Error{
+       message: nil,
+       postgres: %{
+         code: :internal_error,
+         message: "portal execution failed: portal stream receive error: Code: UNKNOWN: query execution failed: failed to flush: write unix @->/multigres/cluster/data/pooler_x82xq6md/pg_sockets/.s.PGSQL.25433: write: broken pipe",
+         unknown: "ERROR",
+         severity: "ERROR",
+         pg_code: "XX000"
+       },
+       connection_id: 761266613,
+       query: nil
+     }
+     19:48:23.974 error_code=DatabaseIpVersionIsIpv4 [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+     
+
+Finished in 26.8 seconds (0.00s async, 26.8s sync)
+
+Result: 0/1 passed
+Failed: 1 test
+[os_mon] memory supervisor port (memsup): Erlang has closed
+[os_mon] cpu supervisor port (cpu_sup): Erlang has closed

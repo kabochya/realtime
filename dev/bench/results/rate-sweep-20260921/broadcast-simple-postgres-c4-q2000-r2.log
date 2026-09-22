@@ -1,0 +1,64 @@
+    warning: Logger.add_backend/1 is deprecated. Use LoggerBackends.add/2 from :logger_backends dependency
+    │
+ 31 │       Logger.add_backend(LogflareLogger.HttpBackend)
+    │              ~
+    │
+    └─ lib/realtime/application.ex:31:14: Realtime.Application.start/2
+
+     warning: the following conditional expression:
+
+         !use_replica?
+
+     will always evaluate to true because its inner expression has type:
+
+         dynamic(false or nil)
+
+     type warning found at:
+     │
+ 190 │       !use_replica? and master_region?() ->
+     │       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     │
+     └─ lib/realtime/api.ex:190: Realtime.Api.get_tenant_by_external_id/2
+
+     warning: the following clause will never match:
+
+         {:error, _} ->
+
+     because it attempts to match on the result of:
+
+         Realtime.Nodes.get_node_for_tenant(tenant)
+
+     which has type:
+
+         dynamic({:ok, term(), nil or binary()})
+
+     type warning found at:
+     │
+ 162 │         {:error, _} -> node()
+     │         ~~~~~~~~~~~~~~~~~~~~~
+     │
+     └─ lib/realtime/tenants/migrations.ex:162: Realtime.Tenants.Migrations.migration_target/1
+
+
+16:57:39.161 [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+
+16:57:39.244 [info] Migrations already up
+warning: the following files do not match any of the configured `:test_load_filters` / `:test_ignore_filters`:
+
+dev/bench/realtime_latency.exs
+
+This might indicate a typo in a test file name (for example, using "foo_tests.exs" instead of "foo_test.exs").
+
+See the configuration for `:test_pattern` under `mix help test` for more information.
+
+[test_helper.exs] Time to start tests: 55 ms
+Running ExUnit with seed: 1, max_cases: 1
+Excluding tags: [:failing, :requires_no_supautils_policy_grants, :requires_docker_backend, :requires_pgdelta]
+
+BENCHMARK {"end_to_end_latency_ms":{"count":18674,"max":126.24,"mean":1.4424627289279255,"p50":1.214,"p95":2.172,"p99":5.583},"delivery_elapsed_seconds":10.001296,"otp_release":"29","attempted_inserts":18674,"peak_backlog":17,"errors":[],"telemetry":{"broadcast_processed_events":18674,"poll_query_ms":{"count":0},"broadcast_commit_lag_ms":{"count":18674,"max":112,"min":0,"mean":0.8783870622255543,"p50":1,"p95":2,"p99":5},"broadcast_inserted_at_lag_ms":{"count":18674,"max":112.247,"min":0.558,"mean":1.2594959837206787,"p50":1.055,"p95":1.902,"p99":5.352},"broadcast_processed_per_second":1821.2868385351292,"event_counters":{"realtime.tenants.broadcast_from_database":18674}},"payload_bytes":256,"backlog_at_write_end":0,"warmup_seconds":3,"mode":"independent","delivered_events_per_second_during_writes":1867.1580163210847,"target_rate_achieved":false,"events_before_sql_ack":164,"server":{"max_connections":"100","max_wal_senders":"10","synchronous_commit":"on","synchronous_standby_names":"","version":"PostgreSQL 17.6 on aarch64-unknown-linux-gnu, compiled by gcc (GCC) 15.2.0, 64-bit"},"post_ack_delivery_lag_ms":{"count":18674,"max":27.802,"mean":0.20913002034914774,"p50":0.175,"p95":0.349,"p99":0.609},"scenario":"simple","intentionally_filtered":0,"workload":"broadcast","delivered_events_per_second":1867.1580163210847,"delivery_timeout_ms":10000,"elapsed_seconds":10.25319,"expected_events":18674,"schedulers":10,"backend":"postgres","max_bytes_per_second":1000000000,"concurrency":4,"successful_inserts":18674,"clock_after":{"db_minus_host_ms":0.1275,"uncertainty_ms":0.1705},"successful_insert_qps":1867.1580163210847,"drain_seconds":0.0,"sql_latency_ms":{"count":18674,"max":126.075,"mean":1.2333327085787782,"p50":1.028,"p95":1.874,"p99":5.135},"requested_seconds":10,"poll_interval_ms":10,"missing_events":0,"poll_max_changes":100,"drain_wait_seconds":0.251894,"write_elapsed_seconds":10.001296,"target_writes_per_second":2000,"elixir_version":"1.20.4","clock_before":{"db_minus_host_ms":0.076,"uncertainty_ms":0.137},"timestamp":"2026-09-21T23:57:53.823790Z","delivered_events":18674,"max_events_per_second":1000000,"missed_schedule_slots":1325}
+.
+Finished in 14.3 seconds (0.00s async, 14.3s sync)
+
+Result: 1 passed
+[os_mon] memory supervisor port (memsup): Erlang has closed
+[os_mon] cpu supervisor port (cpu_sup): Erlang has closed

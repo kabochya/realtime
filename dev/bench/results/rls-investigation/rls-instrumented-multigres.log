@@ -1,0 +1,81 @@
+    warning: Logger.add_backend/1 is deprecated. Use LoggerBackends.add/2 from :logger_backends dependency
+    │
+ 31 │       Logger.add_backend(LogflareLogger.HttpBackend)
+    │              ~
+    │
+    └─ lib/realtime/application.ex:31:14: Realtime.Application.start/2
+
+     warning: the following conditional expression:
+
+         !use_replica?
+
+     will always evaluate to true because its inner expression has type:
+
+         dynamic(false or nil)
+
+     type warning found at:
+     │
+ 190 │       !use_replica? and master_region?() ->
+     │       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     │
+     └─ lib/realtime/api.ex:190: Realtime.Api.get_tenant_by_external_id/2
+
+     warning: the following clause will never match:
+
+         {:error, _} ->
+
+     because it attempts to match on the result of:
+
+         Realtime.Nodes.get_node_for_tenant(tenant)
+
+     which has type:
+
+         dynamic({:ok, term(), nil or binary()})
+
+     type warning found at:
+     │
+ 162 │         {:error, _} -> node()
+     │         ~~~~~~~~~~~~~~~~~~~~~
+     │
+     └─ lib/realtime/tenants/migrations.ex:162: Realtime.Tenants.Migrations.migration_target/1
+
+
+08:45:39.863 [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+
+08:45:39.921 [info] Migrations already up
+[test_helper.exs] Time to start tests: 47 ms
+Running ExUnit with seed: 1, max_cases: 1
+Excluding tags: [:failing, :requires_supautils_policy_grants, :requires_docker_backend, :requires_pgdelta]
+
+RLS_DIAGNOSTICS {"missing_ids":[462,540],"rows_present_after_drain":[[462,"allowed"],[540,"allowed"]],"rls_rejections":[{"activity":[{"application_name":"benchmark_writer","pid":2415,"wait_event":"WALWrite","xid":"2238"},{"application_name":"benchmark_writer","pid":2416,"wait_event":"WalSync","xid":"2239"},{"application_name":"benchmark_writer","pid":3292,"wait_event":"SyncRep","xid":"2237"}],"at":"2026-09-22T15:45:43.733688+00:00","id":462,"isolation":"read committed","reader_pid":3289,"visible_without_rls":false,"wal":{"action":"I","columns":[{"name":"id","type":"integer","typeoid":23,"value":462},{"name":"details","type":"text","typeoid":25,"value":"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"},{"name":"binary_data","type":"bytea","typeoid":17,"value":null},{"name":"audience","type":"text","typeoid":25,"value":"allowed"}],"pk":[{"name":"id","type":"integer","typeoid":23}],"schema":"public","table":"test","timestamp":"2026-09-22 15:45:43.730264+00"}},{"activity":[{"application_name":"benchmark_writer","pid":2415,"wait_event":"WALWrite","xid":"2320"},{"application_name":"benchmark_writer","pid":2416,"wait_event":"WalSync","xid":"2318"},{"application_name":"benchmark_writer","pid":3292,"wait_event":"WALWrite","xid":"2319"},{"application_name":"benchmark_writer","pid":3291,"wait_event":"SyncRep","xid":"2317"}],"at":"2026-09-22T15:45:43.995903+00:00","id":540,"isolation":"read committed","reader_pid":3289,"visible_without_rls":false,"wal":{"action":"I","columns":[{"name":"id","type":"integer","typeoid":23,"value":540},{"name":"details","type":"text","typeoid":25,"value":"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"},{"name":"binary_data","type":"bytea","typeoid":17,"value":null},{"name":"audience","type":"text","typeoid":25,"value":"allowed"}],"pk":[{"name":"id","type":"integer","typeoid":23}],"schema":"public","table":"test","timestamp":"2026-09-22 15:45:43.988481+00"}}]}
+
+
+  1) test database to Realtime processing and delivery (RealtimeLatencyBenchmark)
+     /tmp/realtime_rls_instrumented_test.exs:14
+     warm-up failed: ["2 committed inserts missing delivery after drain timeout"]
+     code: assert warm.errors == [], "warm-up failed: #{inspect(warm.errors)}"
+     stacktrace:
+       /tmp/realtime_rls_instrumented_test.exs:91: (test)
+
+     The following output was logged:
+     08:45:40.399 error_code=DatabaseIpVersionIsIpv4 [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+     08:45:40.419 error_code=DatabaseIpVersionIsIpv4 [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+     08:45:40.477 error_code=DatabaseIpVersionIsIpv4 [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+     08:45:41.157 error_code=DatabaseIpVersionIsIpv4 [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+     08:45:41.197 error_code=DatabaseIpVersionIsIpv4 project=ibygplfqzxuyzqi5cbzbnq3dvsqfppwe external_id=ibygplfqzxuyzqi5cbzbnq3dvsqfppwe [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+     08:45:41.202 error_code=DatabaseIpVersionIsIpv4 project=ibygplfqzxuyzqi5cbzbnq3dvsqfppwe external_id=ibygplfqzxuyzqi5cbzbnq3dvsqfppwe [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+     08:45:41.227 error_code=DatabaseIpVersionIsIpv4 [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+     08:45:41.363 project=ibygplfqzxuyzqi5cbzbnq3dvsqfppwe external_id=ibygplfqzxuyzqi5cbzbnq3dvsqfppwe [warning] Starting distributed postgres extension [lauch_node: :"main@127.0.0.1", region: "us-east-1", platform_region: "us-east-1"]
+     08:45:41.365 error_code=DatabaseIpVersionIsIpv4 project=ibygplfqzxuyzqi5cbzbnq3dvsqfppwe external_id=ibygplfqzxuyzqi5cbzbnq3dvsqfppwe [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+     08:45:41.366 error_code=DatabaseIpVersionIsIpv4 project=ibygplfqzxuyzqi5cbzbnq3dvsqfppwe external_id=ibygplfqzxuyzqi5cbzbnq3dvsqfppwe [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+     08:45:41.366 error_code=DatabaseIpVersionIsIpv4 project=ibygplfqzxuyzqi5cbzbnq3dvsqfppwe external_id=ibygplfqzxuyzqi5cbzbnq3dvsqfppwe [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+     08:45:41.367 error_code=ReconnectSubscribeToPostgres project=ibygplfqzxuyzqi5cbzbnq3dvsqfppwe external_id=ibygplfqzxuyzqi5cbzbnq3dvsqfppwe exp=1790696741 [warning] ReconnectSubscribeToPostgres: Re-connecting to PostgreSQL with params: [%{id: "aa4eafca-b69c-11f1-8b9b-6a37a3b0599b", params: %{"event" => "INSERT", "schema" => "public", "table" => "test"}, channel_pid: #PID<0.1642.0>, claims: %{"audience" => "allowed", "exp" => 1790696741, "iat" => 1790091941, "ref" => "127.0.0.1", "role" => "anon"}}]
+     08:45:42.763 error_code=DatabaseIpVersionIsIpv4 [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+     
+
+Finished in 15.5 seconds (0.00s async, 15.5s sync)
+
+Result: 0/1 passed
+Failed: 1 test
+[os_mon] memory supervisor port (memsup): Erlang has closed
+[os_mon] cpu supervisor port (cpu_sup): Erlang has closed

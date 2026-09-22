@@ -1,0 +1,88 @@
+    warning: Logger.add_backend/1 is deprecated. Use LoggerBackends.add/2 from :logger_backends dependency
+    │
+ 31 │       Logger.add_backend(LogflareLogger.HttpBackend)
+    │              ~
+    │
+    └─ lib/realtime/application.ex:31:14: Realtime.Application.start/2
+
+     warning: the following conditional expression:
+
+         !use_replica?
+
+     will always evaluate to true because its inner expression has type:
+
+         dynamic(false or nil)
+
+     type warning found at:
+     │
+ 190 │       !use_replica? and master_region?() ->
+     │       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     │
+     └─ lib/realtime/api.ex:190: Realtime.Api.get_tenant_by_external_id/2
+
+     warning: the following clause will never match:
+
+         {:error, _} ->
+
+     because it attempts to match on the result of:
+
+         Realtime.Nodes.get_node_for_tenant(tenant)
+
+     which has type:
+
+         dynamic({:ok, term(), nil or binary()})
+
+     type warning found at:
+     │
+ 162 │         {:error, _} -> node()
+     │         ~~~~~~~~~~~~~~~~~~~~~
+     │
+     └─ lib/realtime/tenants/migrations.ex:162: Realtime.Tenants.Migrations.migration_target/1
+
+
+19:51:26.846 [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+
+19:51:26.905 [info] Migrations already up
+warning: the following files do not match any of the configured `:test_load_filters` / `:test_ignore_filters`:
+
+dev/bench/realtime_latency.exs
+
+This might indicate a typo in a test file name (for example, using "foo_tests.exs" instead of "foo_test.exs").
+
+See the configuration for `:test_pattern` under `mix help test` for more information.
+
+[test_helper.exs] Time to start tests: 31 ms
+Running ExUnit with seed: 1, max_cases: 1
+Excluding tags: [:failing, :requires_supautils_policy_grants, :requires_docker_backend, :requires_pgdelta]
+
+
+
+  1) test database to Realtime processing and delivery (RealtimeLatencyBenchmark)
+     dev/bench/realtime_latency.exs:13
+     warm-up failed: ["5 committed inserts missing delivery after drain timeout"]
+     code: assert warm.errors == [], "warm-up failed: #{inspect(warm.errors)}"
+     stacktrace:
+       dev/bench/realtime_latency.exs:88: (test)
+
+     The following output was logged:
+     19:51:27.353 error_code=DatabaseIpVersionIsIpv4 [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+     19:51:27.372 error_code=DatabaseIpVersionIsIpv4 [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+     19:51:27.426 error_code=DatabaseIpVersionIsIpv4 [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+     19:51:28.172 error_code=DatabaseIpVersionIsIpv4 [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+     19:51:28.203 error_code=DatabaseIpVersionIsIpv4 project=tkqmu4f37a63xvnx27i7ik7mdlpb3jvy external_id=tkqmu4f37a63xvnx27i7ik7mdlpb3jvy [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+     19:51:28.208 error_code=DatabaseIpVersionIsIpv4 project=tkqmu4f37a63xvnx27i7ik7mdlpb3jvy external_id=tkqmu4f37a63xvnx27i7ik7mdlpb3jvy [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+     19:51:28.238 error_code=DatabaseIpVersionIsIpv4 [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+     19:51:28.365 project=tkqmu4f37a63xvnx27i7ik7mdlpb3jvy external_id=tkqmu4f37a63xvnx27i7ik7mdlpb3jvy [warning] Starting distributed postgres extension [lauch_node: :"main@127.0.0.1", region: "us-east-1", platform_region: "us-east-1"]
+     19:51:28.368 error_code=DatabaseIpVersionIsIpv4 project=tkqmu4f37a63xvnx27i7ik7mdlpb3jvy external_id=tkqmu4f37a63xvnx27i7ik7mdlpb3jvy [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+     19:51:28.368 error_code=DatabaseIpVersionIsIpv4 project=tkqmu4f37a63xvnx27i7ik7mdlpb3jvy external_id=tkqmu4f37a63xvnx27i7ik7mdlpb3jvy [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+     19:51:28.368 error_code=DatabaseIpVersionIsIpv4 project=tkqmu4f37a63xvnx27i7ik7mdlpb3jvy external_id=tkqmu4f37a63xvnx27i7ik7mdlpb3jvy [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+     19:51:28.369 error_code=ReconnectSubscribeToPostgres project=tkqmu4f37a63xvnx27i7ik7mdlpb3jvy external_id=tkqmu4f37a63xvnx27i7ik7mdlpb3jvy exp=1790650288 [warning] ReconnectSubscribeToPostgres: Re-connecting to PostgreSQL with params: [%{id: "8229a8ae-b630-11f1-8a0b-6a37a3b0599b", params: %{"event" => "INSERT", "schema" => "public", "table" => "test"}, channel_pid: #PID<0.1638.0>, claims: %{"audience" => "allowed", "exp" => 1790650288, "iat" => 1790045488, "ref" => "127.0.0.1", "role" => "anon"}}]
+     19:51:31.265 error_code=DatabaseIpVersionIsIpv4 [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+     
+
+Finished in 17.0 seconds (0.00s async, 17.0s sync)
+
+Result: 0/1 passed
+Failed: 1 test
+[os_mon] memory supervisor port (memsup): Erlang has closed
+[os_mon] cpu supervisor port (cpu_sup): Erlang has closed

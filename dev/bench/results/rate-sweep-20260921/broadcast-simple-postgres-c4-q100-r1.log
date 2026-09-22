@@ -1,0 +1,273 @@
+    warning: Logger.add_backend/1 is deprecated. Use LoggerBackends.add/2 from :logger_backends dependency
+    │
+ 31 │       Logger.add_backend(LogflareLogger.HttpBackend)
+    │              ~
+    │
+    └─ lib/realtime/application.ex:31:14: Realtime.Application.start/2
+
+     warning: the following conditional expression:
+
+         !use_replica?
+
+     will always evaluate to true because its inner expression has type:
+
+         dynamic(false or nil)
+
+     type warning found at:
+     │
+ 190 │       !use_replica? and master_region?() ->
+     │       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     │
+     └─ lib/realtime/api.ex:190: Realtime.Api.get_tenant_by_external_id/2
+
+     warning: the following clause will never match:
+
+         {:error, _} ->
+
+     because it attempts to match on the result of:
+
+         Realtime.Nodes.get_node_for_tenant(tenant)
+
+     which has type:
+
+         dynamic({:ok, term(), nil or binary()})
+
+     type warning found at:
+     │
+ 162 │         {:error, _} -> node()
+     │         ~~~~~~~~~~~~~~~~~~~~~
+     │
+     └─ lib/realtime/tenants/migrations.ex:162: Realtime.Tenants.Migrations.migration_target/1
+
+
+16:53:36.159 [warning] DatabaseIpVersionIsIpv4: Tenant database host 127.0.0.1 resolved to an IPv4 address
+
+16:53:36.410 [info] == Running 20210706140551 Realtime.Repo.Migrations.CreateTenants.change/0 forward
+
+16:53:36.410 [info] create table tenants
+
+16:53:36.414 [info] create index tenants_external_id_index
+
+16:53:36.415 [info] == Migrated 20210706140551 in 0.0s
+
+16:53:36.428 [info] == Running 20220329161857 Realtime.Repo.Migrations.AddExtensionsTable.change/0 forward
+
+16:53:36.428 [info] create table extensions
+
+16:53:36.431 [info] create index extensions_tenant_external_id_type_index
+
+16:53:36.432 [info] == Migrated 20220329161857 in 0.0s
+
+16:53:36.435 [info] == Running 20220410212326 Realtime.Repo.Migrations.AddTenantMaxEps.up/0
+
+16:53:36.435 [info] alter table tenants
+
+16:53:36.436 [info] == Migrated 20220410212326 in 0.0s
+
+16:53:36.439 [info] == Running 20220506102948 Realtime.Repo.Migrations.RenamePollIntervalToPollIntervalMs.up/0
+
+16:53:36.443 [debug] QUERY OK source="extensions" db=0.3ms
+SELECT e0."id", e0."settings" FROM "extensions" AS e0 WHERE (e0."type" = $1) ["postgres_cdc_rls"]
+
+16:53:36.443 [info] == Migrated 20220506102948 in 0.0s
+
+16:53:36.447 [info] == Running 20220527210857 Realtime.Repo.Migrations.AddExternalIdUniqIndex.change/0 forward
+
+16:53:36.447 [info] execute "alter table tenants add constraint uniq_external_id unique (external_id)"
+
+16:53:36.448 [info] == Migrated 20220527210857 in 0.0s
+
+16:53:36.451 [info] == Running 20220815211129 Realtime.Repo.Migrations.NewMaxEventsPerSecondDefault.change/0 forward
+
+16:53:36.451 [info] alter table tenants
+
+16:53:36.453 [info] == Migrated 20220815211129 in 0.0s
+
+16:53:36.455 [info] == Running 20220815215024 Realtime.Repo.Migrations.SetCurrentMaxEventsPerSecond.change/0 forward
+
+16:53:36.455 [info] execute "update tenants set max_events_per_second = 1000"
+
+16:53:36.455 [info] == Migrated 20220815215024 in 0.0s
+
+16:53:36.457 [info] == Running 20220818141501 Realtime.Repo.Migrations.ChangeLimitsDefaults.change/0 forward
+
+16:53:36.457 [info] alter table tenants
+
+16:53:36.458 [info] == Migrated 20220818141501 in 0.0s
+
+16:53:36.460 [info] == Running 20221018173709 Realtime.Repo.Migrations.AddCdcDefault.up/0
+
+16:53:36.460 [info] alter table tenants
+
+16:53:36.460 [info] == Migrated 20221018173709 in 0.0s
+
+16:53:36.463 [info] == Running 20221102172703 Realtime.Repo.Migrations.RenamePgType.up/0
+
+16:53:36.463 [info] execute "update extensions set type = 'postgres_cdc_rls'"
+
+16:53:36.463 [info] == Migrated 20221102172703 in 0.0s
+
+16:53:36.465 [info] == Running 20221223010058 Realtime.Repo.Migrations.DropTenantsUniqExternalIdIndex.change/0 forward
+
+16:53:36.465 [info] execute "ALTER TABLE IF EXISTS tenants DROP CONSTRAINT IF EXISTS uniq_external_id"
+
+16:53:36.465 [info] == Migrated 20221223010058 in 0.0s
+
+16:53:36.467 [info] == Running 20230110180046 Realtime.Repo.Migrations.AddLimitsFieldsToTenants.change/0 forward
+
+16:53:36.467 [info] alter table tenants
+
+16:53:36.467 [info] == Migrated 20230110180046 in 0.0s
+
+16:53:36.469 [info] == Running 20230810220907 Realtime.Repo.Migrations.AlterTenantsTableColumnsToText.change/0 forward
+
+16:53:36.470 [info] alter table tenants
+
+16:53:36.471 [info] == Migrated 20230810220907 in 0.0s
+
+16:53:36.473 [info] == Running 20230810220924 Realtime.Repo.Migrations.AlterExtensionsTableColumnsToText.change/0 forward
+
+16:53:36.473 [info] alter table extensions
+
+16:53:36.473 [info] == Migrated 20230810220924 in 0.0s
+
+16:53:36.475 [info] == Running 20231024094642 :"Elixir.Realtime.Repo.Migrations.Add-tenant-suspend-flag".change/0 forward
+
+16:53:36.475 [info] alter table tenants
+
+16:53:36.475 [info] == Migrated 20231024094642 in 0.0s
+
+16:53:36.477 [info] == Running 20240306114423 Realtime.Repo.Migrations.AdddTenantJwtJwksColumn.change/0 forward
+
+16:53:36.477 [info] alter table tenants
+
+16:53:36.478 [info] == Migrated 20240306114423 in 0.0s
+
+16:53:36.480 [info] == Running 20240418082835 Realtime.Repo.Migrations.AddAuthorizationFlag.change/0 forward
+
+16:53:36.480 [info] alter table tenants
+
+16:53:36.481 [info] == Migrated 20240418082835 in 0.0s
+
+16:53:36.482 [info] == Running 20240625211759 Realtime.Repo.Migrations.RemoveEnableAuthorizationFlag.change/0 forward
+
+16:53:36.482 [info] alter table tenants
+
+16:53:36.483 [info] == Migrated 20240625211759 in 0.0s
+
+16:53:36.485 [info] == Running 20240704172020 :"Elixir.Realtime.Repo.Migrations.Add-notify-private-alpha".change/0 forward
+
+16:53:36.485 [info] alter table tenants
+
+16:53:36.486 [info] == Migrated 20240704172020 in 0.0s
+
+16:53:36.488 [info] == Running 20240902173232 Realtime.Repo.Migrations.AddExtensionExternalIdIndex.change/0 forward
+
+16:53:36.488 [info] create index if not exists extensions_tenant_external_id_index
+
+16:53:36.488 [info] == Migrated 20240902173232 in 0.0s
+
+16:53:36.490 [info] == Running 20241106103258 Realtime.Repo.Migrations.AddPrivateOnlyFlagColumnToTenant.change/0 forward
+
+16:53:36.490 [info] alter table tenants
+
+16:53:36.491 [info] == Migrated 20241106103258 in 0.0s
+
+16:53:36.494 [info] == Running 20250424203323 Realtime.Repo.Migrations.AddMigrationsRanToTenant.change/0 forward
+
+16:53:36.494 [info] alter table tenants
+
+16:53:36.494 [info] == Migrated 20250424203323 in 0.0s
+
+16:53:36.497 [info] == Running 20250613072131 Realtime.Repo.Migrations.AddTenantBroadcastAdapter.change/0 forward
+
+16:53:36.497 [info] alter table tenants
+
+16:53:36.497 [info] == Migrated 20250613072131 in 0.0s
+
+16:53:36.499 [info] == Running 20250711044927 Realtime.Repo.Migrations.ChangeDefaultBroadcastAdapterToGenRpc.change/0 forward
+
+16:53:36.499 [info] alter table tenants
+
+16:53:36.500 [info] == Migrated 20250711044927 in 0.0s
+
+16:53:36.502 [info] == Running 20250811121559 Realtime.Repo.Migrations.AddMaxPresenceEventsPerSecond.change/0 forward
+
+16:53:36.502 [info] alter table tenants
+
+16:53:36.503 [info] == Migrated 20250811121559 in 0.0s
+
+16:53:36.504 [info] == Running 20250926223044 Realtime.Repo.Migrations.SetDefaultPresenceValue.change/0 forward
+
+16:53:36.504 [info] alter table tenants
+
+16:53:36.505 [info] == Migrated 20250926223044 in 0.0s
+
+16:53:36.507 [info] == Running 20251204170944 Realtime.Repo.Migrations.NullableJwtSecrets.change/0 forward
+
+16:53:36.507 [info] alter table tenants
+
+16:53:36.507 [info] create check constraint jwt_secret_or_jwt_jwks_required on table tenants
+
+16:53:36.507 [info] == Migrated 20251204170944 in 0.0s
+
+16:53:36.509 [info] == Running 20251218000543 Realtime.Repo.Migrations.EnsureJwtSecretIsText.change/0 forward
+
+16:53:36.509 [info] alter table tenants
+
+16:53:36.509 [info] == Migrated 20251218000543 in 0.0s
+
+16:53:36.511 [info] == Running 20260209232800 Realtime.Repo.Migrations.AddMaxClientPresenceEventsPerSecond.change/0 forward
+
+16:53:36.511 [info] alter table tenants
+
+16:53:36.511 [info] == Migrated 20260209232800 in 0.0s
+
+16:53:36.513 [info] == Running 20260304000000 Realtime.Repo.Migrations.AddPresenceEnabledToTenants.change/0 forward
+
+16:53:36.513 [info] alter table tenants
+
+16:53:36.514 [info] == Migrated 20260304000000 in 0.0s
+
+16:53:36.516 [info] == Running 20260422000000 Realtime.Repo.Migrations.CreateFeatureFlags.change/0 forward
+
+16:53:36.516 [info] create table feature_flags
+
+16:53:36.516 [info] create index feature_flags_name_index
+
+16:53:36.517 [info] alter table tenants
+
+16:53:36.519 [info] == Migrated 20260422000000 in 0.0s
+
+16:53:36.521 [info] == Running 20260709151810 Realtime.Repo.Migrations.AddFeatureFlagRolloutPercentage.change/0 forward
+
+16:53:36.521 [info] alter table feature_flags
+
+16:53:36.522 [info] create check constraint rollout_percentage_must_be_between_0_and_100 on table feature_flags
+
+16:53:36.522 [info] == Migrated 20260709151810 in 0.0s
+
+16:53:36.524 [info] == Running 20260805000000 Realtime.Repo.Migrations.AddGcmMigratedAtToTenants.change/0 forward
+
+16:53:36.524 [info] alter table tenants
+
+16:53:36.524 [info] == Migrated 20260805000000 in 0.0s
+warning: the following files do not match any of the configured `:test_load_filters` / `:test_ignore_filters`:
+
+dev/bench/realtime_latency.exs
+
+This might indicate a typo in a test file name (for example, using "foo_tests.exs" instead of "foo_test.exs").
+
+See the configuration for `:test_pattern` under `mix help test` for more information.
+
+[test_helper.exs] Time to start tests: 50 ms
+Running ExUnit with seed: 1, max_cases: 1
+Excluding tags: [:failing, :requires_no_supautils_policy_grants, :requires_docker_backend, :requires_pgdelta]
+
+BENCHMARK {"delivered_events_per_second_during_writes":99.98843133849414,"successful_inserts":1000,"end_to_end_latency_ms":{"count":1000,"max":25.533,"mean":3.7767179999999994,"p50":3.482,"p95":5.555,"p99":9.67},"backend":"postgres","otp_release":"29","drain_seconds":0.0,"delivered_events_per_second":99.98843133849414,"delivered_events":1000,"sql_latency_ms":{"count":1000,"max":20.749,"mean":3.303213000000003,"p50":3.004,"p95":5.005,"p99":9.098},"workload":"broadcast","intentionally_filtered":0,"target_rate_achieved":true,"errors":[],"events_before_sql_ack":0,"telemetry":{"broadcast_processed_events":1000,"poll_query_ms":{"count":0},"broadcast_commit_lag_ms":{"count":1000,"max":15,"min":0,"mean":2.177,"p50":2,"p95":4,"p99":6},"broadcast_inserted_at_lag_ms":{"count":1000,"max":18.105,"min":1.325,"mean":3.2186029999999985,"p50":2.962,"p95":4.754,"p99":8.042},"broadcast_processed_per_second":97.54515901909369,"event_counters":{"realtime.tenants.broadcast_from_database":1000}},"write_elapsed_seconds":10.001157,"concurrency":4,"expected_events":1000,"mode":"independent","attempted_inserts":1000,"poll_interval_ms":10,"requested_seconds":10,"server":{"max_connections":"100","max_wal_senders":"10","synchronous_commit":"on","synchronous_standby_names":"","version":"PostgreSQL 17.6 on aarch64-unknown-linux-gnu, compiled by gcc (GCC) 15.2.0, 64-bit"},"missing_events":0,"post_ack_delivery_lag_ms":{"count":1000,"max":10.825,"mean":0.4735050000000005,"p50":0.436,"p95":0.776,"p99":1.289},"max_bytes_per_second":1000000000,"poll_max_changes":100,"elapsed_seconds":10.251662,"scenario":"simple","successful_insert_qps":99.98843133849414,"missed_schedule_slots":0,"schedulers":10,"payload_bytes":256,"peak_backlog":1,"warmup_seconds":3,"drain_wait_seconds":0.250505,"clock_after":{"db_minus_host_ms":0.125,"uncertainty_ms":0.176},"backlog_at_write_end":0,"delivery_elapsed_seconds":10.001157,"elixir_version":"1.20.4","target_writes_per_second":100,"timestamp":"2026-09-21T23:53:51.038229Z","clock_before":{"db_minus_host_ms":0.0945,"uncertainty_ms":0.1575},"max_events_per_second":1000000,"delivery_timeout_ms":10000}
+.
+Finished in 14.1 seconds (0.00s async, 14.1s sync)
+
+Result: 1 passed
+[os_mon] memory supervisor port (memsup): Erlang has closed
+[os_mon] cpu supervisor port (cpu_sup): Erlang has closed

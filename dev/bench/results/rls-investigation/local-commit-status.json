@@ -1,0 +1,14 @@
+[
+  {
+    "rate": 500,
+    "exit_code": 2
+  },
+  {
+    "rate": 1000,
+    "exit_code": 2
+  },
+  {
+    "rate": 2000,
+    "exit_code": 2
+  }
+]

@@ -1,0 +1,156 @@
+{
+  "missing_ids": [
+    462,
+    540
+  ],
+  "rows_present_after_drain": [
+    [
+      462,
+      "allowed"
+    ],
+    [
+      540,
+      "allowed"
+    ]
+  ],
+  "rls_rejections": [
+    {
+      "activity": [
+        {
+          "application_name": "benchmark_writer",
+          "pid": 2415,
+          "wait_event": "WALWrite",
+          "xid": "2238"
+        },
+        {
+          "application_name": "benchmark_writer",
+          "pid": 2416,
+          "wait_event": "WalSync",
+          "xid": "2239"
+        },
+        {
+          "application_name": "benchmark_writer",
+          "pid": 3292,
+          "wait_event": "SyncRep",
+          "xid": "2237"
+        }
+      ],
+      "at": "2026-09-22T15:45:43.733688+00:00",
+      "id": 462,
+      "isolation": "read committed",
+      "reader_pid": 3289,
+      "visible_without_rls": false,
+      "wal": {
+        "action": "I",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "typeoid": 23,
+            "value": 462
+          },
+          {
+            "name": "details",
+            "type": "text",
+            "typeoid": 25,
+            "value": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          },
+          {
+            "name": "binary_data",
+            "type": "bytea",
+            "typeoid": 17,
+            "value": null
+          },
+          {
+            "name": "audience",
+            "type": "text",
+            "typeoid": 25,
+            "value": "allowed"
+          }
+        ],
+        "pk": [
+          {
+            "name": "id",
+            "type": "integer",
+            "typeoid": 23
+          }
+        ],
+        "schema": "public",
+        "table": "test",
+        "timestamp": "2026-09-22 15:45:43.730264+00"
+      }
+    },
+    {
+      "activity": [
+        {
+          "application_name": "benchmark_writer",
+          "pid": 2415,
+          "wait_event": "WALWrite",
+          "xid": "2320"
+        },
+        {
+          "application_name": "benchmark_writer",
+          "pid": 2416,
+          "wait_event": "WalSync",
+          "xid": "2318"
+        },
+        {
+          "application_name": "benchmark_writer",
+          "pid": 3292,
+          "wait_event": "WALWrite",
+          "xid": "2319"
+        },
+        {
+          "application_name": "benchmark_writer",
+          "pid": 3291,
+          "wait_event": "SyncRep",
+          "xid": "2317"
+        }
+      ],
+      "at": "2026-09-22T15:45:43.995903+00:00",
+      "id": 540,
+      "isolation": "read committed",
+      "reader_pid": 3289,
+      "visible_without_rls": false,
+      "wal": {
+        "action": "I",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "typeoid": 23,
+            "value": 540
+          },
+          {
+            "name": "details",
+            "type": "text",
+            "typeoid": 25,
+            "value": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          },
+          {
+            "name": "binary_data",
+            "type": "bytea",
+            "typeoid": 17,
+            "value": null
+          },
+          {
+            "name": "audience",
+            "type": "text",
+            "typeoid": 25,
+            "value": "allowed"
+          }
+        ],
+        "pk": [
+          {
+            "name": "id",
+            "type": "integer",
+            "typeoid": 23
+          }
+        ],
+        "schema": "public",
+        "table": "test",
+        "timestamp": "2026-09-22 15:45:43.988481+00"
+      }
+    }
+  ]
+}

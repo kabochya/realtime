@@ -1,0 +1,45 @@
+{
+  "revision": "b3c423e274eb19ab97efc69f6a581a5e5a6c9de5",
+  "working_tree_status": "?? compose.multigres-local.yml\n?? dev/bench/README.md\n?? dev/bench/realtime_latency.exs\n?? dev/bench/run.py\n?? dev/bench/workloads.exs",
+  "postgres_image": "supabase/postgres:17.6.1.166",
+  "multigres_image": "ghcr.io/multigres/multigres-cluster-supabase:sha-0de21aa",
+  "ports": {
+    "metadata": 37432,
+    "postgres": 37433,
+    "multigres": 37434
+  },
+  "container_image_ids": {
+    "metadata": "sha256:b3bfedb107413abb3b8cb0d0874b0414a1dceb3d55bc0c778de6ad22d1f7dc86",
+    "postgres": "sha256:b3bfedb107413abb3b8cb0d0874b0414a1dceb3d55bc0c778de6ad22d1f7dc86",
+    "multigres": "sha256:90242fbcd3b639e2e3adce23347d111defe41173ff8f2201492a06478c0f997e"
+  },
+  "host": "macOS-26.6.2-arm64-arm-64bit",
+  "host_cpu_count": 10,
+  "parameters": {
+    "action": "run",
+    "seconds": 10,
+    "warmup": 3,
+    "repeats": 2,
+    "concurrency": [
+      4
+    ],
+    "rates": [
+      100,
+      500,
+      1000,
+      2000
+    ],
+    "workloads": [
+      "broadcast",
+      "postgres-changes"
+    ],
+    "scenarios": [
+      "simple",
+      "filter",
+      "rls"
+    ],
+    "payload_bytes": 256,
+    "mode": "independent",
+    "output": "dev/bench/results/rate-sweep-20260921"
+  }
+}

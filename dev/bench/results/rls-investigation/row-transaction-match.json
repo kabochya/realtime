@@ -1,0 +1,12 @@
+[
+  {
+    "id": 462,
+    "xmin": "2237",
+    "captured_wait": "SyncRep"
+  },
+  {
+    "id": 540,
+    "xmin": "2317",
+    "captured_wait": "SyncRep"
+  }
+]

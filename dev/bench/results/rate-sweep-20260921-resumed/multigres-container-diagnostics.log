@@ -1,0 +1,185 @@
+==> Received shutdown signal, stopping Multigres cluster...
+Stopping Multigres cluster...
+Using configuration from: /multigres/cluster/multigres.yaml
+Stopping cluster with provisioner: local
+=== Tearing down Multigres cluster ===
+=== Deprovisioning database: postgres ===
+Stopping multigateway service (ID: 79nv4dgp) for database postgres...
+Stopping multigateway service (ID: nch2b8hx) for database postgres...
+Stopping multiorch service (ID: 9fs46jls) for database postgres...
+Stopping multiorch service (ID: nrkqfczx) for database postgres...
+Stopping multipooler service (ID: 5pmkb68h) for database postgres...
+Stopping multipooler service (ID: x82xq6md) for database postgres...
+Stopping pgctld service (ID: pgctld-5pmkb68h) for database postgres...
+Stopping pgctld service (ID: pgctld-x82xq6md) for database postgres...
+Stopping PostgreSQL via pgctld...Stopping PostgreSQL via pgctld... stopping PostgreSQL... stopping PostgreSQL...Cleaned up log file: /multigres/cluster/logs/dbs/postgres/multigateway/79nv4dgp.log
+Cleaned up log file: /multigres/cluster/logs/dbs/postgres/multigateway/nch2b8hx.log
+ PostgreSQL stopped ✓
+ - PostgreSQL server stopped successfully
+Stopping pgctld process...Cleaned up log file: /multigres/cluster/logs/dbs/postgres/multiorch/nrkqfczx.log
+Cleaned up log file: /multigres/cluster/logs/dbs/postgres/multiorch/9fs46jls.log
+Cleaning up pgctld log file... pgctld stopped ✓
+Cleaned up log file: /multigres/cluster/logs/dbs/postgres/multipooler/x82xq6md.log
+ PostgreSQL stopped ✓
+ - PostgreSQL server stopped successfully
+Stopping pgctld process...Cleaned up log file: /multigres/cluster/logs/dbs/postgres/multipooler/5pmkb68h.log
+Cleaning up pgctld log file... pgctld stopped ✓
+Database postgres deprovisioned successfully (8 services stopped)
+=== Deprovisioning global services ===
+Cleaned up log file: /multigres/cluster/logs/multiadmin/rpb8644c.log
+=== Deprovisioning etcd ===
+Cleaned up log file: /multigres/cluster/logs/etcd/v59w5g4w.log
+Teardown completed successfully
+Multigres cluster stopped successfully!
+==> max_connections=100; pooler global capacity=90 (reserved 10)
+==> Applying extra PostgreSQL config via /multigres/cluster/pg-extra.conf
+==> Starting Multigres cluster...
+Multigres — Distributed Postgres made easy
+=================================================================
+✨ Bootstrapping your local Multigres cluster — this may take a few moments ✨
+📄 - Config loaded from: /multigres/cluster/multigres.yaml
+🛠️  - Provisioner: local
+
+👋 Here we go! Starting core services...
+=================================================================
+
+🔍 - pgbackrest 2.57.0 found — version compatible ✓
+🔍 - postgres 17.6 found — version compatible ✓
+=== Bootstrapping Multigres cluster ===
+
+=== Provisioning etcd ===
+🔍 - etcd 3.6.4 found — version compatible ✓
+▶️  - Launching etcd on port 2379... ready ✓
+
+🌐 - etcd available at: localhost:2379
+=== Setting up pgctld directories ===
+Setting up pgctld directory for cell zone1...
+✓ Created pooler directory: /multigres/cluster/data/pooler_5pmkb68h
+Setting up pgctld directory for cell zone2...
+✓ Created pooler directory: /multigres/cluster/data/pooler_x82xq6md
+
+=== Configuring cell ===
+⚙️  - Configuring cell: zone1
+⚙️  - Using etcd at: localhost:2379
+⚙️  - Cell "zone1" detected — reusing existing cell ✓
+=== Configuring cell ===
+⚙️  - Configuring cell: zone2
+⚙️  - Using etcd at: localhost:2379
+⚙️  - Cell "zone2" detected — reusing existing cell ✓
+
+=== Starting Multiadmin ===
+▶️  - Launching multiadmin (HTTP:15000, gRPC:15070)... ready ✓
+🌐 - Available at: http://localhost:15000
+🌐 - gRPC available at: localhost:15070
+
+=== Provisioning database: postgres ===
+
+=== Registering database in topology ===
+⚙️  - Registering database: postgres
+⚙️  - Database "postgres" detected — reusing existing database ✓
+
+=== Generating pgBackRest certs ===
+
+=== Starting all services in parallel ===
+▶️  - Launching multiorch (HTTP:15300, gRPC:15370)...▶️  - Configuring multipooler gRPC Unix socket: /multigres/cluster/sockets/multipooler-zone1.sock
+▶️  - Launching multigateway (HTTP:15100, gRPC:15170, pg:5432)...▶️  - Configuring pgctld gRPC Unix socket: /multigres/cluster/sockets/pgctld-zone1.sock
+▶️  - Starting pgctld server (gRPC:15470, HTTP:15400)...▶️  - Configuring multipooler gRPC Unix socket: /multigres/cluster/sockets/multipooler-zone2.sock
+▶️  - Launching multigateway (HTTP:15101, gRPC:15171, pg:5433)...▶️  - Launching multiorch (HTTP:15301, gRPC:15371)...▶️  - Configuring pgctld gRPC Unix socket: /multigres/cluster/sockets/pgctld-zone2.sock
+▶️  - Starting pgctld server (gRPC:15471, HTTP:15401)... ready ✓
+ ready ✓
+ starting PostgreSQL... starting PostgreSQL... ready ✓
+ ready ✓
+ PostgreSQL started (PID: 135) ✓
+ - PostgreSQL server started successfully ready ✓
+▶️  - Launching multipooler (HTTP:15200, gRPC:15270)... PostgreSQL started (PID: 134) ✓
+ - PostgreSQL server started successfully ready ✓
+▶️  - Launching multipooler (HTTP:15201, gRPC:15271)... ready ✓
+ ready ✓
+
+✓ All cells provisioned successfully
+
+Database postgres provisioned successfully across 2 cells with 6 total services
+
+⏳ - Waiting up to 2m0s for the cluster to start serving queries...
+✅ - multigateway ready at localhost:5433
+✅ - multigateway ready at localhost:5432
+
+=================================================================
+🎉 - Multigres cluster started successfully!
+=================================================================
+
+Provisioned Services
+--------------------
+
+etcd
+   Host: localhost
+   Port: 2379
+
+multiadmin
+   Host: localhost
+   Ports:
+     - GRPC: 15070
+     - HTTP: 15000 → http://localhost:15000
+   Log: /multigres/cluster/logs/multiadmin/jvrtmcc9.log
+
+multiorch
+   Host: localhost
+   Ports:
+     - HTTP: 15301 → http://localhost:15301
+     - GRPC: 15371
+   Log: /multigres/cluster/logs/dbs/postgres/multiorch/45xvtm2x.log
+
+multiorch
+   Host: localhost
+   Ports:
+     - HTTP: 15300 → http://localhost:15300
+     - GRPC: 15370
+   Log: /multigres/cluster/logs/dbs/postgres/multiorch/tbh88x62.log
+
+multigateway
+   Host: localhost
+   Ports:
+     - PG: 5432
+     - HTTP: 15100 → http://localhost:15100
+     - GRPC: 15170
+   Log: /multigres/cluster/logs/dbs/postgres/multigateway/mbtfnzf5.log
+
+multigateway
+   Host: localhost
+   Ports:
+     - HTTP: 15101 → http://localhost:15101
+     - GRPC: 15171
+     - PG: 5433
+   Log: /multigres/cluster/logs/dbs/postgres/multigateway/mnsb679m.log
+
+multipooler
+   Host: localhost
+   Ports:
+     - GRPC: 15271
+     - HTTP: 15201 → http://localhost:15201
+   Log: /multigres/cluster/logs/dbs/postgres/multipooler/x82xq6md.log
+
+multipooler
+   Host: localhost
+   Ports:
+     - HTTP: 15200 → http://localhost:15200
+     - GRPC: 15270
+   Log: /multigres/cluster/logs/dbs/postgres/multipooler/5pmkb68h.log
+
+=================================================================
+✨ - Next steps:
+- Open multiadmin in your browser: http://localhost:15000
+- Open multiorch in your browser: http://localhost:15301
+- Open multiorch in your browser: http://localhost:15300
+- Open multigateway in your browser: http://localhost:15100
+- Open multigateway in your browser: http://localhost:15101
+- Open multipooler in your browser: http://localhost:15201
+- Open multipooler in your browser: http://localhost:15200
+- 🐘 Connect to PostgreSQL: PGPASSWORD=postgres psql -h localhost -p 5432 -U postgres
+- 🟢 Cluster started successfully. Enjoy!
+- To stop the cluster: "multigres cluster stop"
+=================================================================
+==> Multigres cluster is ready.
+    - PostgreSQL (zone1 multigateway): port 5432
+    - multigateway HTTP:               port 15100
+    - multiadmin HTTP:                 port 15000

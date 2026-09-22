@@ -1,0 +1,58 @@
+[
+  {
+    "case": "postgres-changes-rls-multigres-c4-q100-r2",
+    "exit_code": 0
+  },
+  {
+    "case": "postgres-changes-rls-postgres-c4-q100-r2",
+    "exit_code": 0
+  },
+  {
+    "case": "postgres-changes-rls-postgres-c4-q500-r1",
+    "exit_code": 0
+  },
+  {
+    "case": "postgres-changes-rls-multigres-c4-q500-r1",
+    "exit_code": 2
+  },
+  {
+    "case": "postgres-changes-rls-multigres-c4-q500-r2",
+    "exit_code": 2
+  },
+  {
+    "case": "postgres-changes-rls-postgres-c4-q500-r2",
+    "exit_code": 0
+  },
+  {
+    "case": "postgres-changes-rls-postgres-c4-q1000-r1",
+    "exit_code": 0
+  },
+  {
+    "case": "postgres-changes-rls-multigres-c4-q1000-r1",
+    "exit_code": 2
+  },
+  {
+    "case": "postgres-changes-rls-multigres-c4-q1000-r2",
+    "exit_code": 2
+  },
+  {
+    "case": "postgres-changes-rls-postgres-c4-q1000-r2",
+    "exit_code": 0
+  },
+  {
+    "case": "postgres-changes-rls-postgres-c4-q2000-r1",
+    "exit_code": 0
+  },
+  {
+    "case": "postgres-changes-rls-multigres-c4-q2000-r1",
+    "exit_code": 2
+  },
+  {
+    "case": "postgres-changes-rls-multigres-c4-q2000-r2",
+    "exit_code": 2
+  },
+  {
+    "case": "postgres-changes-rls-postgres-c4-q2000-r2",
+    "exit_code": 0
+  }
+]

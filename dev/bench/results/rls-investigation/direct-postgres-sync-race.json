@@ -1,0 +1,38 @@
+{
+  "backend": "direct PostgreSQL, no Multigres",
+  "writer_wait": {
+    "pid": 328,
+    "xid": "1003",
+    "wait": "SyncRep",
+    "state": "active"
+  },
+  "decoded_while_waiting": [
+    {
+      "id": 1,
+      "wal": {
+        "table": "rls_commit_probe",
+        "action": "I",
+        "schema": "public",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "value": 1
+          },
+          {
+            "name": "audience",
+            "type": "text",
+            "value": "allowed"
+          }
+        ]
+      },
+      "xid": "1003",
+      "visible_under_rls": false
+    }
+  ],
+  "writer_exit": 0,
+  "writer_output": "SET\nINSERT 0 1\n",
+  "writer_notice": "WARNING:  canceling wait for synchronous replication due to user request\nDETAIL:  The transaction has already committed locally, but might not have been replicated to the standby.\n",
+  "visible_after_wait_released": "SET\nSET\nt",
+  "next_slot_read": ""
+}
