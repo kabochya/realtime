@@ -1,0 +1,10 @@
+{
+  "duration_seconds": 5,
+  "warmup_seconds": 2,
+  "writers": 4,
+  "repetitions": 1,
+  "images": {
+    "postgres": "sha256:b3bfedb107413abb3b8cb0d0874b0414a1dceb3d55bc0c778de6ad22d1f7dc86",
+    "multigres": "sha256:90242fbcd3b639e2e3adce23347d111defe41173ff8f2201492a06478c0f997e"
+  }
+}
